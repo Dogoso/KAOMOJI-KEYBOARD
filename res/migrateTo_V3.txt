@@ -1,0 +1,47 @@
+
+To properly support the Java 9 module system  (JPMS)  the package structure has 
+been changed.  Class names are still unchanged.  In the list below can find old 
+and new package names of our themes.
+
+  de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel -> de.javasoft.synthetica.aluoxide.SyntheticaAluOxideLookAndFeel 
+  de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel -> de.javasoft.synthetica.blackeye.SyntheticaBlackEyeLookAndFeel 
+  de.javasoft.plaf.synthetica.SyntheticaBlackMoonLookAndFeel -> de.javasoft.synthetica.blackmoon.SyntheticaBlackMoonLookAndFeel 
+  de.javasoft.plaf.synthetica.SyntheticaBlackStarLookAndFeel -> de.javasoft.synthetica.blackstar.SyntheticaBlackStarLookAndFeel 
+  de.javasoft.plaf.synthetica.SyntheticaBlueIceLookAndFeel -> de.javasoft.synthetica.blueice.SyntheticaBlueIceLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel -> de.javasoft.synthetica.bluelight.SyntheticaBlueLightLookAndFeel 
+  de.javasoft.plaf.synthetica.SyntheticaBlueMoonLookAndFeel -> de.javasoft.synthetica.bluemoon.SyntheticaBlueMoonLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaBlueSteelLookAndFeel -> de.javasoft.synthetica.bluesteel.SyntheticaBlueSteelLookAndFeel 
+  de.javasoft.plaf.synthetica.SyntheticaClassyLookAndFeel -> de.javasoft.synthetica.classy.SyntheticaClassyLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaGreenDreamLookAndFeel -> de.javasoft.synthetica.greendream.SyntheticaGreenDreamLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaMauveMetallicLookAndFeel -> de.javasoft.synthetica.mauvemetallic.SyntheticaMauveMetallicLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaOrangeMetallicLookAndFeel -> de.javasoft.synthetica.orangemetallic.SyntheticaOrangeMetallicLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaPlainLookAndFeel -> de.javasoft.synthetica.plain.SyntheticaPlainLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaSilverMoonLookAndFeel -> de.javasoft.synthetica.silvermoon.SyntheticaSilverMoonLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaSimple2DLookAndFeel -> de.javasoft.synthetica.simple2d.SyntheticaSimple2DLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaSkyMetallicLookAndFeel -> de.javasoft.synthetica.skymetallic.SyntheticaSkyMetallicLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaStandardLookAndFeel -> de.javasoft.synthetica.standard.SyntheticaStandardLookAndFeel
+  de.javasoft.plaf.synthetica.SyntheticaWhiteVisionLookAndFeel -> de.javasoft.synthetica.whitevision.SyntheticaWhiteVisionLookAndFeel
+     
+-------------------------------------------------------------------------------     
+
+Custom themes only:
+
+- change major version number of theme to 3 or above
+- the ImagePainter tag in Synth-XML files is no longer supported  and has to be
+  replaced with related Synthetica painter entries (contact support to get 
+  help)
+- optional: to decrease XML file size the image paths don't have to be absolute 
+  and can be relative to the theme class - example:
+  instead of: 
+    /com/company/plaf/images/myImage.png
+  you can now use:   
+    images/myImage.png
+- optional: for proper JPMS support make sure that  the theme package is unique 
+  (not a split-package) and add a module descriptor
+- optional: add high-resolution image files to your theme
+- Update custom resource loading (if used)
+    replace SyntheticaLookAndFeel.class.getResource(String) with SyntheticaLookAndFeel.getInstance().getResource(String)
+- Update custom image resource loading (if used e.g. for custom ImagePainter)
+    replace SyntheticaLookAndFeel.get(String, Component) or UIManager.getString(String) with SyntheticaLookAndFeel.resolveImagePath(String, Component)
+    
+
