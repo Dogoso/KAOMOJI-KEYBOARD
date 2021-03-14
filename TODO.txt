@@ -5,3 +5,4 @@
  - PRINCIPAIS
  
  - Salvar os kaomojis
+ - Mais Kaomojis

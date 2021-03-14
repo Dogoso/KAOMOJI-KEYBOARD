@@ -3,11 +3,15 @@ package com.doglab.main;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.swing.JButton;
@@ -15,23 +19,45 @@ import javax.swing.JPanel;
 
 public class Kaomoji {
 
-	public String[] kaoLove = {"(っ˘з(˘⌣˘ )", "(｡・//ε//・｡)", "(ʃƪ＾3＾）", "(๑˙❥˙๑)"};
-	public String[] kaoHug = {"( >'-')>", "╰(⸝⸝⸝´꒳`⸝⸝⸝)╯", "(⊃｡•́‿•̀｡)⊃", "⊂((・▽・))⊃", "⊂(´･◡･⊂ )∘˚˳° "};
-	public String[] kaoAnimals = {"ʕ ꈍᴥꈍʔ", "(=｀ェ´=)", "(^._.^)ﾉ", "-ᄒᴥᄒ-", "ʕ´•ᴥ•`ʔ"};
+	public String[] kaoLove = {"(っ˘з(˘⌣˘ )", "(｡・//ε//・｡)", "(ʃƪ＾3＾）", "(๑˙❥˙๑)", "♡( ◡‿◡ )", "♡ (￣З￣)",
+			" 	(´꒳`)♡", "(￣ε￣＠)", "(◕‿◕)♡", "(´｡• ᵕ •｡`) ♡", "♡＼(￣▽￣)／♡", "٩(♡ε♡)۶"};
+	
+	public String[] kaoHug = {"( >'-')>", "╰(⸝⸝⸝´꒳`⸝⸝⸝)╯", "(⊃｡•́‿•̀｡)⊃", "⊂((・▽・))⊃", "⊂(´･◡･⊂ )∘˚˳° ", 
+			"(づ￣ ³￣)づ", "(づ ◕‿◕ )づ", " 	(つ✧ω✧)つ", " 	(つ≧▽≦)つ", "⊂( ´ ▽ ` )⊃", "づ￣ ³￣)づ"};
+	
+	public String[] kaoAnimals = {"ʕ ꈍᴥꈍʔ", "(=｀ェ´=)", "(^._.^)ﾉ", "-ᄒᴥᄒ-", "ʕ´•ᴥ•`ʔ", "ต(=ω=)ต",
+			"ฅ(^◕ᴥ◕^)ฅ", "⊂(￣(ｴ)￣)⊃", "(/-(ｴ)-＼)", "/╲/\\╭(ರರ⌓ರರ)╮/\\╱\\", "ଲ(ⓛ ω ⓛ)ଲ"};
+	
 	public String[] kaoCry = {"(´ . .̫ . `)", "｡:ﾟ(;´∩`;)ﾟ:｡", "(｡•́︿•̀｡)", "(ب_ب)", "(눈‸눈)", "(｡ﾉω＼｡)",
-			"(｡ŏ﹏ŏ)", "(╥﹏╥)"};
-	public String[] kaoNervous = {"(●´⌓`●)", "(• ▽ •;)", "(´-﹏-`；)", "(；^ω^）"}; 
-	public String[] kaoSmile = {"(≧▽≦)", "(人 •͈ᴗ•͈)", "(๑╹◡╹๑)ﾉ", "( ꈍᴗꈍ)", "(ㆁωㆁ)"};
-	public String[] kaoSurprise = {"⁄(⁄ ⁄•⁄-⁄•⁄ ⁄)⁄", "(((;ꏿ_ꏿ;)))", "(´⊙ω⊙`)！", "⋋✿ ⁰ o ⁰ ✿⋌"};
-	public String[] kaoDance = {"⁽⁽ଘ( ˊᵕˋ )ଓ⁾⁾", "\\(๑╹◡╹๑)ﾉ♬", "♪ヽ(･ˇ∀ˇ･ゞ)", "ヾ(･ω･*)ﾉ"};
+			"(｡ŏ﹏ŏ)", "(╥﹏╥)", "｡･ﾟﾟ*(>д<)*ﾟﾟ･｡"};
+	public String[] kaoNervous = {"(●´⌓`●)", "(• ▽ •;)", "(´-﹏-`；)", "(；^ω^）", "(＞﹏＜)", "σ(￣、￣〃)",
+			"╮(￣ω￣;)╭", "ლ(ಠ_ಠ ლ)"};
+	
+	public String[] kaoSmile = {"(≧▽≦)", "(人 •͈ᴗ•͈)", "(๑╹◡╹๑)ﾉ", "( ꈍᴗꈍ)", "(ㆁωㆁ)", "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",
+			"。.:☆*:･'(* ⌒―⌒*)))", "(* ^ ω ^)", "ヽ(* ・ω・)ﾉ"};
+	public String[] kaoSurprise = {"⁄(⁄ ⁄•⁄-⁄•⁄ ⁄)⁄", "(((;ꏿ_ꏿ;)))", "(´⊙ω⊙`)！", "⋋✿ ⁰ o ⁰ ✿⋌", 
+			"∑(O_O;)", "(°ロ°) !", "(⊙_⊙)", " 	( : ౦ ‸ ౦ : )"};
+	
+	public String[] kaoDance = {"⁽⁽ଘ( ˊᵕˋ )ଓ⁾⁾", "\\(๑╹◡╹๑)ﾉ♬", "♪ヽ(･ˇ∀ˇ･ゞ)", "ヾ(･ω･*)ﾉ", "乁( • ω •乁)",
+			"ヾ(⌐■_■)ノ♪", " 	✺◟( • ω • )◞✺", " 	(~‾▽‾)~", "┌(＾＾)┘", " 	└(￣-￣└))"};
 	
 	private MostUsedKaomojis mUK;
+	private Font notoSans;
 	
 	private int heightMult = 0;
 	private int lastX = 5;
 	
 	public Kaomoji() {
 		mUK = new MostUsedKaomojis();
+		try {
+			notoSans = Font.createFont(Font.TRUETYPE_FONT, new File("NotoSans-Black.ttf")).deriveFont(14f);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("NotoSans-Black.ttf")));
+		} catch (FontFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void createButtons(JPanel frame3, JPanel frame2, JPanel frame, String[] kaomojis) {
@@ -61,15 +87,16 @@ public class Kaomoji {
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
+			current = kaomojis[i];
 			JButton button = new JButton(current);
-			button.setFont(new Font("NotoSerif-Regular", Font.BOLD, 14));
+			button.setFont(new Font("NotoSans-Black.ttf", Font.BOLD, 14));
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent a) {
 					toClipBoard(button);
 				}
 			});
-			int width = (int)(40+(current.length()*9));
+			int width = (int)(40+(current.length()*9.5));
 			if(lastX+width+45>370) {
 				lastX = 5;
 				heightMult++;
