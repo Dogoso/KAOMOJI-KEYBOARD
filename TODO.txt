@@ -1,3 +1,7 @@
  - Rodar em segundo plano e só abre quando você aperta uma tecla.
  - funciona clicando nos botões e digitando valores em qualquer app
  - botão de desativar e ativar a automação de kaomojis
+ 
+ - PRINCIPAIS
+ 
+ - Salvar os kaomojis

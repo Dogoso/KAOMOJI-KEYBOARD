@@ -1,28 +1,14 @@
 package com.doglab.main;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.Window.Type;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,23 +23,67 @@ import com.doglab.graphics.ImageCatcher;
 
 import de.javasoft.plaf.synthetica.SyntheticaSimple2DLookAndFeel;
 
-
-
-public class Main extends Canvas implements KeyListener{
+public class Main extends Canvas{
 
 	private static final long serialVersionUID = 1L;
-	private static Main main;
 	private JFrame frame;
+	public static Main main;
 	private ImageCatcher imageCatcher;
 	private Kaomoji kaomoji;
 	private ArrayList<JPanel> panels;
+	private JPanel panelChanges;
+	public JPanel panelAbsolute;
+	private JScrollPane scroll;
+	private JLabel show;
+	public JPanel hugPanel;
+	public JPanel pane;
+	
+	private double mX = 0;
+	
+	private Runnable r = new Runnable() {
+		@Override
+		public void run() {
+			while(true) {
+				try {
+					mX = frame.getMousePosition().getX();
+				}catch(NullPointerException e) {
+					
+				}
+				if(show.isVisible()) {
+					show.repaint();
+					if(mX >= 23) {
+						panelChanges.setVisible(false);
+						scroll.getVerticalScrollBar().setVisible(true);
+						show.setVisible(true);
+					}else {
+						panelChanges.setVisible(true);
+						show.setVisible(false);
+						scroll.getVerticalScrollBar().setVisible(false);
+					}
+				}else {
+					panelChanges.repaint();
+					if(mX >= 45) {
+						panelChanges.setVisible(false);
+						scroll.getVerticalScrollBar().setVisible(true);
+						show.setVisible(true);
+					}else {
+						panelChanges.setVisible(true);
+						show.setVisible(false);
+						scroll.getVerticalScrollBar().setVisible(false);
+					}
+				}
+			}
+		}
+	};
 	
 	public Main() {
+		setPreferredSize(new Dimension(400, 400));
+		panelChanges = new JPanel();
 		panels = new ArrayList<JPanel>();
 		kaomoji = new Kaomoji();
-		initJFrame();
-		addKeyListener(this);
 		imageCatcher = new ImageCatcher();
+		initJFrame();
+		new Thread(r).start();
 	}
 	
 	public static void main(String[] args) {
@@ -69,47 +99,45 @@ public class Main extends Canvas implements KeyListener{
 	
 	private void initJFrame() {
 		frame = new JFrame("Kaomoji Keyboard");
-		frame.setSize(new Dimension(400, 400));
-		frame.setType(Type.NORMAL);
 		frame.setResizable(false);
+		frame.setPreferredSize(new Dimension(400, 400));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.dispose();
-		frame.add(this);
-		//frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
-		JPanel pane = new JPanel();
+		frame.add(this);
+		pane = new JPanel();
+		pane.setBounds(45, 0, 400, 400);
 		pane.setPreferredSize(new Dimension(400, 400));
 		pane.setLayout(null);
-		JScrollPane scroll = new JScrollPane(pane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+		
+		panelAbsolute = new JPanel();
+		panelAbsolute.setPreferredSize(new Dimension(355, 400));
+		scroll = new JScrollPane(panelAbsolute, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.getViewport().add(pane);
-		
-		Image img2 = null;
-		Image imgH = null;
-		Image imgS = null;
-		Image imgC = null;
-		Image imgL = null;
-		try {
-			img2 = ImageIO.read(getClass().getResource("/clock.png"));
-			imgC = ImageIO.read(getClass().getResource("/cat.png"));
-			imgL = ImageIO.read(getClass().getResource("/love.png"));
-			imgS = ImageIO.read(getClass().getResource("/sad.png"));
-			imgH = ImageIO.read(getClass().getResource("/happy.png"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-		JPanel panelChanges = new JPanel();
+
+		Image img2 = imageCatcher.catchImage("/clock.png");
+		Image imgH = imageCatcher.catchImage("/happy.png");
+		Image imgS = imageCatcher.catchImage("/sad.png");
+		Image imgC = imageCatcher.catchImage("/cat.png");
+		Image imgL = imageCatcher.catchImage("/love.png");
+
 		panelChanges.setBackground(Color.LIGHT_GRAY);
-		panelChanges.setBounds(0, 0, 45, 400);
+		panelChanges.setBounds(0, 0, 45, 420);
 		panelChanges.setLayout(null);
 		
-		JPanel hugPanel = new JPanel();
+		show = new JLabel();
+		show.setBounds(0, -20, 45, 400);
+		ImageIcon icon = new ImageIcon(imageCatcher.catchImage("/shower.png"));
+		show.setIcon(icon);
+		show.setVisible(false);
+		frame.add(panelChanges);
+		frame.add(show);
+
+		hugPanel = new JPanel();
 		hugPanel.setBounds(0, 10, 400, 150);
 		hugPanel.setLayout(null);
 		JButton hug = new JButton("");
 		hug.setIcon(new ImageIcon(img2));
-		hug.setBounds(5, 10, 35, 35);
+		hug.setBounds(7, 5, 30, 30);
 		hug.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -119,12 +147,11 @@ public class Main extends Canvas implements KeyListener{
 		panelChanges.add(hug);
 		
 		JPanel panelCat = new JPanel();
-		
 		panelCat.setBounds(0, 10, 400, 150);
 		panelCat.setLayout(null);
 		JButton cat = new JButton("");
 		cat.setIcon(new ImageIcon(imgC));
-		cat.setBounds(5, 55, 35, 35);
+		cat.setBounds(7, 40, 30, 30);
 		cat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -134,12 +161,11 @@ public class Main extends Canvas implements KeyListener{
 		panelChanges.add(cat);
 		
 		JPanel panelLove = new JPanel();
-	
 		panelLove.setBounds(0, 10, 400, 150);
 		panelLove.setLayout(null);
 		JButton love = new JButton("");
 		love.setIcon(new ImageIcon(imgL));
-		love.setBounds(5, 100, 35, 35);
+		love.setBounds(7, 75, 30, 30);
 		love.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -149,12 +175,11 @@ public class Main extends Canvas implements KeyListener{
 		panelChanges.add(love);
 		
 		JPanel panelHappy = new JPanel();
-		
 		panelHappy.setLayout(null);
 		panelHappy.setBounds(0, 10, 400, 150);
 		JButton happy = new JButton("");
 		happy.setIcon(new ImageIcon(imgH));
-		happy.setBounds(5, 145, 35, 35);
+		happy.setBounds(7, 110, 30, 30);
 		happy.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -168,7 +193,7 @@ public class Main extends Canvas implements KeyListener{
 		sadPanel.setBounds(0, 10, 400, 150);
 		JButton sad = new JButton("");
 		sad.setIcon(new ImageIcon(imgS));
-		sad.setBounds(5, 190, 35, 35);
+		sad.setBounds(7, 145, 30, 30);
 		sad.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -177,26 +202,80 @@ public class Main extends Canvas implements KeyListener{
 		});
 		panelChanges.add(sad);
 		
-		String[] s = {"╰(⸝⸝⸝´꒳`⸝⸝⸝)╯", "´ - `", "; _ ;", "rola"};
-		kaomoji.createButtons(hugPanel, s);
-		kaomoji.createButtons(hugPanel, s);
-		kaomoji.createButtons(hugPanel, s);
-		kaomoji.createButtons(hugPanel, s);
-		kaomoji.createButtons(hugPanel, s);
-		kaomoji.createButtons(hugPanel, s);
-		kaomoji.createButtons(hugPanel, s);
-		kaomoji.createButtons(hugPanel, s);
-		//kaomoji.createButtons(hugPanel, s);
-		//kaomoji.createButtons(sadPanel, s);
-		//kaomoji.createButtons(panelLove, s);
-		//kaomoji.createButtons(panelCat, s);
-		//kaomoji.createButtons(panelHappy, s);
+		JPanel huggingPanel = new JPanel();
+		huggingPanel.setLayout(null);
+		huggingPanel.setBounds(0, 10, 400, 150);
+		JButton hugging = new JButton("");
+		hugging.setIcon(new ImageIcon(imgS));
+		hugging.setBounds(7, 180, 30, 30);
+		hugging.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				changePanel(huggingPanel);
+			}
+		});
+		panelChanges.add(hugging);
 		
-		hugPanel.setVisible(true);
+		JPanel nervousPanel = new JPanel();
+		nervousPanel.setLayout(null);
+		nervousPanel.setBounds(0, 10, 400, 150);
+		JButton nervous = new JButton("");
+		nervous.setIcon(new ImageIcon(imgS));
+		nervous.setBounds(7,215, 30, 30);
+		nervous.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				changePanel(nervousPanel);
+			}
+		});
+		panelChanges.add(nervous);
+
+		JPanel dancePanel = new JPanel();
+		dancePanel.setLayout(null);
+		dancePanel.setBounds(0, 10, 400, 150);
+		JButton dance = new JButton("");
+		dance.setIcon(new ImageIcon(imgS));
+		dance.setBounds(7, 250, 30, 30);
+		dance.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				changePanel(dancePanel);
+			}
+		});
+		panelChanges.add(dance);
+		
+		JPanel surprisePanel = new JPanel();
+		surprisePanel.setLayout(null);
+		surprisePanel.setBounds(0, 10, 400, 150);
+		JButton surprise = new JButton("");
+		surprise.setIcon(new ImageIcon(imgS));
+		surprise.setBounds(7, 285, 30, 30);
+		surprise.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				changePanel(surprisePanel);
+			}
+		});
+		panelChanges.add(surprise);
+		
+		kaomoji.createButtons(panelAbsolute, pane, panelCat, kaomoji.kaoAnimals);
+		kaomoji.createButtons(panelAbsolute, pane, sadPanel, kaomoji.kaoCry);
+		kaomoji.createButtons(panelAbsolute, pane, panelHappy, kaomoji.kaoSmile);
+		kaomoji.createButtons(panelAbsolute, pane, panelLove, kaomoji.kaoLove);
+		kaomoji.createButtons(panelAbsolute, pane, huggingPanel, kaomoji.kaoHug);
+		kaomoji.createButtons(panelAbsolute, pane, nervousPanel, kaomoji.kaoNervous);
+		kaomoji.createButtons(panelAbsolute, pane, dancePanel, kaomoji.kaoDance);
+		kaomoji.createButtons(panelAbsolute, pane, surprisePanel, kaomoji.kaoSurprise);
+		
+		hugPanel.setVisible(false);
 		panelLove.setVisible(false);
 		sadPanel.setVisible(false);
 		panelHappy.setVisible(false);
 		panelCat.setVisible(false);
+		huggingPanel.setVisible(false);
+		nervousPanel.setVisible(false);
+		dancePanel.setVisible(false);
+		surprisePanel.setVisible(false);
 
 		panels.add(pane);
 		panels.add(hugPanel);
@@ -204,8 +283,25 @@ public class Main extends Canvas implements KeyListener{
 		panels.add(sadPanel);
 		panels.add(panelHappy);
 		panels.add(panelCat);
+		panels.add(huggingPanel);
+		panels.add(nervousPanel);
+		panels.add(dancePanel);
+		panels.add(surprisePanel);
+		
+		changePanel(panelLove);
+		
+		pane.add(hugPanel);
+		pane.add(panelLove);
+		pane.add(sadPanel);
+		pane.add(panelHappy);
+		pane.add(panelCat);
+		pane.add(huggingPanel);
+		pane.add(nervousPanel);
+		pane.add(dancePanel);
+		pane.add(surprisePanel);
+		
 		JButton add = new JButton("+");
-		add.setBounds(2, 235, 40, 35);
+		add.setBounds(2, 320, 40, 35);
 		add.addActionListener(new ActionListener() {
 
 			@Override
@@ -228,12 +324,11 @@ public class Main extends Canvas implements KeyListener{
 							JPanel p = panels.get(i);
 							String[] s = {newKaomoji};
 							if(p.isVisible()) {
-								kaomoji.createButtons(p, s);
+								kaomoji.createButtons(panelAbsolute , pane, p, s);
 							}
 						}
 					}
 				});
-				
 				frame2 = new JFrame("Insert KAOMOJI");
 				frame2.setSize(new Dimension(300, 100));
 				frame2.setResizable(false);
@@ -245,61 +340,34 @@ public class Main extends Canvas implements KeyListener{
 				frame2.setLayout(null);
 				frame2.setVisible(true);
 			}
-			
 		});
 		panelChanges.add(add);
 		
-		pane.add(hugPanel);
-		pane.add(panelLove);
-		pane.add(sadPanel);
-		pane.add(panelHappy);
-		pane.add(panelCat);
-		frame.add(panelChanges);
+		panelAbsolute.setLayout(null);
+		panelAbsolute.setBounds(0, 0, 400, 400);
+		
+		panelAbsolute.add(pane);
 		frame.add(scroll);
-		Image img = null;
-		try {
-			img = ImageIO.read(getClass().getResource("/kaomoji icon.png"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		
+		Image img = imageCatcher.catchImage("/kaomoji icon.png");
 		frame.setIconImage(img);
+	
+		frame.pack();
 		frame.setVisible(true);
 		requestFocus();
 	}
 
 	public void changePanel(JPanel current) {
 		for(int i = 0; i < panels.size(); i++) {
+			JPanel p = panels.get(i);
 			if(i == 0) {
+				p.setBounds(p.getX(), p.getY(), current.getWidth(), current.getHeight());
 				continue;
 			}
-			JPanel p = panels.get(i);
 			if(!p.equals(current)) {
 				p.setVisible(false);
 			}
 		}
 		current.setVisible(true);
 	}
-	
-	public static void selectLayer(JPanel pane, JScrollPane scroll, JPanel pane2, JScrollPane scroll2) {
-		pane.setVisible(false);
-		scroll.setVisible(false);
-		pane2.setVisible(true);
-		scroll2.setVisible(true);
-	}
-	
-	@Override
-	public void keyPressed(KeyEvent e) {
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		
-	}
-	
 }
