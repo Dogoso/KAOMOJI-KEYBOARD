@@ -114,12 +114,6 @@ public class Main extends Canvas{
 		scroll = new JScrollPane(panelAbsolute, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		Image img2 = imageCatcher.catchImage("/clock.png");
-		Image imgH = imageCatcher.catchImage("/happy.png");
-		Image imgS = imageCatcher.catchImage("/sad.png");
-		Image imgC = imageCatcher.catchImage("/cat.png");
-		Image imgL = imageCatcher.catchImage("/love.png");
-
 		panelChanges.setBackground(Color.LIGHT_GRAY);
 		panelChanges.setBounds(0, 0, 45, 420);
 		panelChanges.setLayout(null);
@@ -136,7 +130,7 @@ public class Main extends Canvas{
 		hugPanel.setBounds(0, 10, 400, 150);
 		hugPanel.setLayout(null);
 		JButton hug = new JButton("");
-		hug.setIcon(new ImageIcon(img2));
+		hug.setIcon(new ImageIcon(imageCatcher.catchImage("/clock.png")));
 		hug.setBounds(7, 5, 30, 30);
 		hug.addActionListener(new ActionListener() {
 			@Override
@@ -150,7 +144,7 @@ public class Main extends Canvas{
 		panelCat.setBounds(0, 10, 400, 150);
 		panelCat.setLayout(null);
 		JButton cat = new JButton("");
-		cat.setIcon(new ImageIcon(imgC));
+		cat.setIcon(new ImageIcon(imageCatcher.catchImage("/cat.png")));
 		cat.setBounds(7, 40, 30, 30);
 		cat.addActionListener(new ActionListener() {
 			@Override
@@ -164,7 +158,7 @@ public class Main extends Canvas{
 		panelLove.setBounds(0, 10, 400, 150);
 		panelLove.setLayout(null);
 		JButton love = new JButton("");
-		love.setIcon(new ImageIcon(imgL));
+		love.setIcon(new ImageIcon(imageCatcher.catchImage("/love.png")));
 		love.setBounds(7, 75, 30, 30);
 		love.addActionListener(new ActionListener() {
 			@Override
@@ -178,7 +172,7 @@ public class Main extends Canvas{
 		panelHappy.setLayout(null);
 		panelHappy.setBounds(0, 10, 400, 150);
 		JButton happy = new JButton("");
-		happy.setIcon(new ImageIcon(imgH));
+		happy.setIcon(new ImageIcon(imageCatcher.catchImage("/happy.png")));
 		happy.setBounds(7, 110, 30, 30);
 		happy.addActionListener(new ActionListener() {
 			@Override
@@ -192,7 +186,7 @@ public class Main extends Canvas{
 		sadPanel.setLayout(null);
 		sadPanel.setBounds(0, 10, 400, 150);
 		JButton sad = new JButton("");
-		sad.setIcon(new ImageIcon(imgS));
+		sad.setIcon(new ImageIcon(imageCatcher.catchImage("/sad.png")));
 		sad.setBounds(7, 145, 30, 30);
 		sad.addActionListener(new ActionListener() {
 			@Override
@@ -206,7 +200,7 @@ public class Main extends Canvas{
 		huggingPanel.setLayout(null);
 		huggingPanel.setBounds(0, 10, 400, 150);
 		JButton hugging = new JButton("");
-		hugging.setIcon(new ImageIcon(imgS));
+		hugging.setIcon(new ImageIcon(imageCatcher.catchImage("/hug.png")));
 		hugging.setBounds(7, 180, 30, 30);
 		hugging.addActionListener(new ActionListener() {
 			@Override
@@ -220,7 +214,7 @@ public class Main extends Canvas{
 		nervousPanel.setLayout(null);
 		nervousPanel.setBounds(0, 10, 400, 150);
 		JButton nervous = new JButton("");
-		nervous.setIcon(new ImageIcon(imgS));
+		nervous.setIcon(new ImageIcon(imageCatcher.catchImage("/nervous.png")));
 		nervous.setBounds(7,215, 30, 30);
 		nervous.addActionListener(new ActionListener() {
 			@Override
@@ -234,7 +228,7 @@ public class Main extends Canvas{
 		dancePanel.setLayout(null);
 		dancePanel.setBounds(0, 10, 400, 150);
 		JButton dance = new JButton("");
-		dance.setIcon(new ImageIcon(imgS));
+		dance.setIcon(new ImageIcon(imageCatcher.catchImage("/dance.png")));
 		dance.setBounds(7, 250, 30, 30);
 		dance.addActionListener(new ActionListener() {
 			@Override
@@ -248,7 +242,7 @@ public class Main extends Canvas{
 		surprisePanel.setLayout(null);
 		surprisePanel.setBounds(0, 10, 400, 150);
 		JButton surprise = new JButton("");
-		surprise.setIcon(new ImageIcon(imgS));
+		surprise.setIcon(new ImageIcon(imageCatcher.catchImage("/surprise.png")));
 		surprise.setBounds(7, 285, 30, 30);
 		surprise.addActionListener(new ActionListener() {
 			@Override

@@ -62,14 +62,14 @@ public class Kaomoji {
 				e.printStackTrace();
 			}
 			JButton button = new JButton(current);
-			button.setFont(new Font("NotoSans-Black", Font.PLAIN, button.getFont().getSize()));
+			button.setFont(new Font("NotoSerif-Regular", Font.BOLD, 14));
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent a) {
 					toClipBoard(button);
 				}
 			});
-			int width = (int)(40+(current.length()*6.5));
+			int width = (int)(40+(current.length()*9));
 			if(lastX+width+45>370) {
 				lastX = 5;
 				heightMult++;
