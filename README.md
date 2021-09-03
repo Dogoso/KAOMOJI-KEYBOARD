@@ -2,7 +2,7 @@
 
 ## 1- **Why?** 。.:☆*:･'(* ⌒―⌒*)))
 
-Like me, a lot of people wanted a keyboard of kaomojis to use on Discord, Telegram, Whatsapp etc... In Android that exist, but not in computer, that was the initial thought, so, if i need and people need, why don't do?
+Like me, a lot of people want a keyboard of kaomojis that works in Discord, Telegram, Whatsapp etc... This exist on Android, but not on desktop, so, if i and others people need, why don't do?
 
 
 
